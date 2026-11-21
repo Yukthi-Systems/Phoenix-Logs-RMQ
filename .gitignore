@@ -1,0 +1,28 @@
+# Binaries
+/bin/
+/dist/
+/phoenix-logs-rmq
+*.exe
+
+# Environment: real credentials live here. Never commit them.
+.env
+.env.*
+!.env.example
+
+# Logs
+/logs/
+*.log
+
+# Go
+*.test
+*.out
+coverage.*
+vendor/
+go.work
+go.work.sum
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

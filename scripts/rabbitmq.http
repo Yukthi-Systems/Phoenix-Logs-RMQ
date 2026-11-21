@@ -1,0 +1,61 @@
+### RabbitMQ Management HTTP API requests for manually testing the worker.
+### Requires the VS Code "REST Client" extension (humao.rest-client).
+### Defaults match docker-compose.yaml (user phoenix / phoenix, vhost "/").
+
+@host = localhost
+@mgmtPort = 15672
+@vhost = %2F
+@queue = v3_logs
+
+### Basic auth for phoenix:phoenix (base64 "cGhvZW5peDpwaG9lbml4").
+@auth = Basic cGhvZW5peDpwaG9lbml4
+
+### Publish a mail-flow message (type header "fuglu").
+POST http://{{host}}:{{mgmtPort}}/api/exchanges/{{vhost}}/amq.default/publish
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+  "properties": {
+    "content_type": "application/json",
+    "headers": { "type": "fuglu" }
+  },
+  "routing_key": "{{queue}}",
+  "payload": "{\"euid\":\"e-0001\",\"from_email_id\":\"alice@example.com\",\"to_email_ids\":[\"bob@example.org\"],\"email_domains\":[\"example.org\"],\"subject\":\"Hello\",\"type\":\"Incoming\",\"status\":\"Accepted\",\"status_description\":\"250 OK\",\"log_timestamp\":\"2026-01-01T10:00:00+05:30\",\"email_timestamp\":\"2026-01-01 10:00:00.123456\",\"meta_data\":{\"size\":1234}}",
+  "payload_encoding": "string"
+}
+
+### Publish an audit message (type header "audit").
+POST http://{{host}}:{{mgmtPort}}/api/exchanges/{{vhost}}/amq.default/publish
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+  "properties": {
+    "content_type": "application/json",
+    "headers": { "type": "audit" }
+  },
+  "routing_key": "{{queue}}",
+  "payload": "{\"organization_id\":\"org_123\",\"user_id\":\"user_456\",\"message\":\"User logged in\",\"action_type\":\"login\",\"action_timestamp\":\"2026-01-01T10:00:00+05:30\",\"details\":{\"ip\":\"203.0.113.7\"}}",
+  "payload_encoding": "string"
+}
+
+### Peek at messages without consuming them (requeues after read).
+POST http://{{host}}:{{mgmtPort}}/api/queues/{{vhost}}/{{queue}}/get
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+  "count": 5,
+  "ackmode": "ack_requeue_true",
+  "encoding": "auto"
+}
+
+### Check queue depth / consumer count.
+GET http://{{host}}:{{mgmtPort}}/api/queues/{{vhost}}/{{queue}}
+Authorization: {{auth}}
+
+### Count stored rows in ClickHouse (HTTP interface).
+GET http://{{host}}:8123/?query=SELECT%20count()%20FROM%20mail_flow_logs
+X-ClickHouse-User: default
+X-ClickHouse-Key: changeme

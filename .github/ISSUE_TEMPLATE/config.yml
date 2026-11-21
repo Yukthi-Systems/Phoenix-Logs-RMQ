@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Ask a question on Discord
+    url: https://discord.com/invite/2BS7Z4FhJ
+    about: Usage questions, ideas and general discussion. Please don't open issues for questions.
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/Yukthi-Systems/Phoenix-Logs-RMQ/security/advisories/new
+    about: Report privately. Do not open a public issue. See SECURITY.md.
+  - name: ✉️ Contact the maintainers
+    url: mailto:connect@yukthi.com
+    about: For anything that is not a bug or feature request.

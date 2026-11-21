@@ -1,0 +1,15 @@
+# Keep secrets, logs and local tooling out of the build context.
+.env
+.env.*
+!.env.example
+logs/
+bin/
+dist/
+.git/
+.github/
+.idea/
+.vscode/
+*.md
+!DOCKERHUB.md
+docker-compose.yaml
+scripts/
