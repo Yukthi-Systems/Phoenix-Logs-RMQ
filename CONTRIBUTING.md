@@ -108,9 +108,9 @@ Common types: `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `build`, `ci`, 
 
 1. Move the **Unreleased** entries in `CHANGELOG.md` under a new version heading.
 2. Tag and push: `git tag v1.2.3 && git push origin v1.2.3`.
-3. The [release workflow](.github/workflows/release.yml) builds `linux/amd64` and `linux/arm64` images and pushes `rjyspl/phoenix-logs-rmq:v1.2.3`, `:v1.2`, `:v1` and `:latest`. It also syncs [DOCKERHUB.md](DOCKERHUB.md) to the Docker Hub overview.
+3. The [Docker workflow](.github/workflows/docker.yml) builds a `linux/amd64` image and pushes `rjyspl/phoenix-logs-rmq:v1.2.3` and `:latest`. Every push to `main` also pushes `:main` and `:latest`. It also syncs [DOCKERHUB.md](DOCKERHUB.md) to the Docker Hub overview.
 
-The workflow needs the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repository secrets.
+The workflow needs the `DOCKER_USERNAME` and `DOCKER_PASSWORD` repository secrets.
 
 ## Getting help
 
