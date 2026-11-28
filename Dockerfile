@@ -45,6 +45,6 @@ ENV LOG_FILE=/app/logs/app.log \
 VOLUME ["/app/logs"]
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD pgrep -x phoenix-logs-rmq > /dev/null || exit 1
+  CMD ["pgrep", "-f", "^/usr/local/bin/phoenix-logs-rmq"]
 
 ENTRYPOINT ["/usr/local/bin/phoenix-logs-rmq"]
